@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <h1>Todo App</h1>
+    </header>
+    <main>
+        <div>
+            <div>
+                <input type="form" id="newTodo" placeholder="Get sh*t done!" class="todo-form">
+                <input type="button" value="Add" id="addNew">
+            </div>
+            <h2>Filter & Options</h2>
+            <div class="filter-container">
+                <div>
+                    <input type="radio" id="allToDo" name="toDofilter" value="all">
+                    <label for="allToDo">All</label>
+                </div>
+                <div>
+                    <input type="radio" id="openToDo" name="toDofilter" value="open">
+                    <label for="openToDo">Open</label>
+                </div>
+                <div>
+                    <input type="radio" id="doneToDo" name="toDofilter" value="done">
+                    <label for="doneToDo">Done</label>
+                </div>
+            </div>
+            <input type="button" value="Remove Done Todos" id="removeDone">
+            <h2>Your Todos</h2>
+            <ul id="todoList"></ul>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>

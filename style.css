@@ -1,0 +1,155 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --colorpink: #ef476f;
+  --coloryellow: #f5ab00;
+  --colorteal: #06d6a0;
+  --colorlightblue: #118ab2;
+  --colordarkblue: #073b4c;
+  --bgmain: #f5f5f5;
+  --bgitems: #ffffff;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+html {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bgmain);
+}
+
+h1 {
+  color: var(--bgitems);
+  text-shadow: 0.05em 0.05em 0 var(--colorlightblue),
+    0.1em 0.1em 0 var(--coloryellow);
+  text-align: center;
+}
+
+header {
+  background-color: var(--colorpink);
+  padding: 3em;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.todo-form {
+  appearance: none;
+  border: none;
+  border-radius: 0.3em;
+  padding: 0.5em;
+  margin: 2em 1em 1em 0;
+}
+
+h2 {
+  margin-block: 1em;
+}
+
+input[type="button"] {
+  background-color: var(--colorlightblue);
+  font: inherit;
+  color: var(--bgitems);
+  border: none;
+  border-radius: 0.3em;
+  padding: 0.3em 0.4em;
+  box-shadow: 0.2em 0.2em 0 var(--colorpink);
+  cursor: pointer;
+}
+
+#addNew {
+  padding: 0.5em 0.4em;
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+input[type="radio"] {
+  appearance: none;
+  padding: 0.5em;
+  border-radius: 50%;
+  outline: black 0.12em solid;
+  cursor: pointer;
+}
+
+label {
+  cursor: pointer;
+}
+
+input[type="radio"]:checked {
+  background-color: var(--colorlightblue);
+}
+
+#removeDone {
+  margin-top: 1em;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: var(--bgitems);
+  margin-block: 1em;
+  padding: 0.5em 1em;
+  border-radius: 0.4em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.strike-through {
+  text-decoration: line-through;
+}
+
+.todoLabel {
+  padding-inline: 0.5em;
+}
+
+.todoCheckbox {
+  appearance: none;
+  padding: 0.5em;
+  width: 0.2em;
+  height: 0.2em;
+  background-color: var(--bgmain);
+  outline: black 0.14em solid;
+  cursor: pointer;
+}
+
+.todoCheckbox:checked {
+  background-color: var(--colorteal);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' aria-hidden='true' focusable='false' %3E%3Cpath fill='none' stroke='white' stroke-width='3' d='M1.73 12.91l6.37 6.37L22.79 4.59' /%3E%3C/svg%3E");
+}
+
+input:focus {
+  outline: var(--coloryellow) 0.15em solid;
+}
+
+.todoCheckbox:focus {
+  outline: black 0.14em solid;
+}
+
+li:focus-within {
+  outline: 2px solid var(--coloryellow);
+  box-shadow: 0.2em 0.2em 0 var(--colorpink);
+}
