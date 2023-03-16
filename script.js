@@ -144,7 +144,7 @@ function renderItem(todo) {
   return newLi;
 }
 
-fetchTodo().then((data) => {
-  state.todos = data;
+(async () => {
+  state.todos = await fetchTodo();
   render();
-});
+})();
