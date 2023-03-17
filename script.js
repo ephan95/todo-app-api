@@ -1,4 +1,4 @@
-"use strict";
+import { getTodos, createTodo, changeTodo, deleteTodo } from "./api.js";
 
 const addButton = document.getElementById("addNew");
 const removeButton = document.getElementById("removeDone");
@@ -8,7 +8,7 @@ const todoListUl = document.getElementById("todoList");
 
 const state = {
   todos: [],
-  filter: [],
+  filter: "",
 };
 
 addButton.addEventListener("click", (event) => {
@@ -29,27 +29,17 @@ removeButton.addEventListener("click", (event) => {
 todoListUl.addEventListener("click", (event) => {
   if (event.target.matches(".todoItem, .todoCheckbox, todoLabel")) {
     const clickedElement = parseInt(event.target.closest("li").id);
-    console.log(clickedElement);
     toggleTodoDone(clickedElement);
     render();
   }
 });
 
-async function fetchTodo() {
-  const response = await fetch("http://localhost:4730/todos");
-  const data = await response.json();
-  return data;
-}
-
-async function addToDoToApi(newToDo) {
-  const response = await fetch("http://localhost:4730/todos", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newToDo),
+filterRadios.forEach((radio) => {
+  radio.addEventListener("change", () => {
+    getFilter();
+    render();
   });
-}
+});
 
 async function addNewTodo() {
   const description = formInputNewTodo.value;
@@ -64,13 +54,13 @@ async function addNewTodo() {
   }
 
   if (description !== "" && description.length >= 5) {
-    await addToDoToApi({
+    await createTodo({
       id: +new Date(),
       description: description,
       done: false,
     });
 
-    const updatedTodos = await fetchTodo();
+    const updatedTodos = await getTodos();
     state.todos = updatedTodos;
 
     render();
@@ -81,12 +71,10 @@ async function addNewTodo() {
 
 async function deleteDoneTodosFromApi() {
   const doneTodos = state.todos.filter((todo) => todo.done === true);
-  const deletePromises = doneTodos.map((todo) =>
-    fetch(`http://localhost:4730/todos/${todo.id}`, { method: "DELETE" })
-  );
+  const deletePromises = doneTodos.map((todo) => deleteTodo(todo.id));
   await Promise.all(deletePromises);
 
-  const updatedTodos = await fetchTodo();
+  const updatedTodos = await getTodos();
   state.todos = updatedTodos;
 
   render();
@@ -95,13 +83,8 @@ async function deleteDoneTodosFromApi() {
 async function toggleTodoDone(id) {
   const todo = state.todos.find((todo) => todo.id === id);
   if (todo) {
-    console.log(todo);
     todo.done = !todo.done;
-    const response = await fetch(`http://localhost:4730/todos/${todo.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(todo),
-    });
+    changeTodo(id, todo);
   }
 }
 
@@ -109,9 +92,7 @@ function render() {
   const todoListUl = document.getElementById("todoList");
   todoListUl.innerHTML = "";
 
-  //add filtered array here
-
-  for (let todo of state.todos) {
+  for (let todo of filterTodos(state.filter)) {
     const newTodoItem = renderItem(todo);
     todoListUl.append(newTodoItem);
   }
@@ -132,7 +113,7 @@ function renderItem(todo) {
   newCheckBox.classList.add("todoCheckbox");
 
   const newLabel = document.createElement("label");
-  newLabel.htmlFor = `todo-${todo.id}`;
+  newLabel.htmlFor = `todo-${id}`;
   newLabel.innerText = todo.description;
   newLabel.classList.add("todoLabel");
 
@@ -144,7 +125,25 @@ function renderItem(todo) {
   return newLi;
 }
 
+function getFilter() {
+  state.filter = document.querySelector(
+    'input[name="toDofilter"]:checked'
+  ).value;
+}
+
+function filterTodos(filter) {
+  let filteredTodos = state.todos;
+
+  if (filter === "done") {
+    filteredTodos = state.todos.filter((todo) => todo.done === true);
+  } else if (filter === "open") {
+    filteredTodos = state.todos.filter((todo) => todo.done === false);
+  }
+
+  return filteredTodos;
+}
+
 (async () => {
-  state.todos = await fetchTodo();
+  state.todos = await getTodos();
   render();
 })();
